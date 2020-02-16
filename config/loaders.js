@@ -7,17 +7,11 @@ const loader = {
   typeScript: require.resolve('ts-loader'),
   babel: require.resolve('babel-loader'),
   css: require.resolve('css-loader'),
-  linaria: require.resolve('linaria/loader'),
   sass: require.resolve('sass-loader'),
 }
 
 const babelPresets = {
   env: require.resolve("@babel/preset-env")
-}
-
-const linariaLoaderConfig = {
-  loader: loader.linaria,
-  options: { sourceMap: mode },
 }
 
 const typeScriptLoaderConfig = {
@@ -64,7 +58,6 @@ const devLoaders = [
     exclude: /node_modules/,
     use: [
       typeScriptLoaderConfig,
-      linariaLoaderConfig
     ]
   }
 ]
@@ -93,7 +86,6 @@ const prodLoaders = [
     ],
     use: [
       loader.babel,
-      loader.linaria
     ]
   },
   {
@@ -102,7 +94,6 @@ const prodLoaders = [
     use: [
       babelLoaderConfig,
       typeScriptLoaderConfig,
-      linariaLoaderConfig
     ]
   }
 ]
