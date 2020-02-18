@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+const argv = require('yargs').argv
+
+if (argv._[0] === 'webpack' && argv._[1] === 'app') {
+  require('../webpack/app').exec({
+    env: argv.env,
+    input: argv.in,
+    out: argv.out,
+    prod: argv.prod,
+    legacy: argv.legacy,
+    tsConfig: argv['ts-config']
+  })
+}
+
+if (argv._[0] === 'webpack' && argv._[1] === 'lib') {
+  require('../webpack/lib').exec({})
+}
+
+// console.log(argv)
+
+// const execSync = require('child_process').execSync;
+
+// const args = [ ...process.argv ]
+// args.shift()
+// args.shift()
+
+// try {
+//   execSync(`npx webpack --config ${__dirname}/../webpack.config.js ${args.join(' ')}`, {stdio:'inherit'});
+// } catch (error) {
+//   // mute
+// }
