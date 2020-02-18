@@ -1,20 +1,22 @@
 const path = require('path')
+const fs = require('fs-extra')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const { args } = require('./args')
 const { modes, defaults } = require('./constants')
 
-const getStats = (plugins, stats) => {
+const getStats = (stats) => {
   if (stats) {
-    plugins.push(new BundleAnalyzerPlugin())
+    return [new BundleAnalyzerPlugin()]
   }
+  return []
 }
 
-const getMode = () => {
+const getMode = (prod) => {
   let mode = modes.dev
-  if (args.prod) {
+  if (prod) {
     mode = modes.prod
     process.env.NODE_ENV = modes.prod
   }
+  return mode
 }
 
 const getInputDir = (input) => {
@@ -26,9 +28,9 @@ const getInputDir = (input) => {
 }
 
 
-const getEntry = (inputDir, legacy = false, inName = defaults.inName) => {
+const getEntry = (inputDir = defaults.cwd, legacy = false, inName = defaults.inName) => {
   let entry = [path.join(inputDir, inName)]
-  if (args.legacy) {
+  if (legacy && fs.existsSync(path.join(inputDir, defaults.inLegacyName))) {
     entry.unshift(path.join(inputDir, defaults.inLegacyName))
   }
   return entry
@@ -51,9 +53,13 @@ const getOutFile = (legacy = false) => {
 }
 
 const getTsConfig = (tsConfig) => {
-  const userTsConfig = path.join(defaults.cwd, defaults.tsconfigName)
+  let userTsConfig = path.join(defaults.cwd, defaults.tsconfigName)
+  if (!fs.existsSync(userTsConfig)) {
+    console.error('No tsconfig.json found')
+    process.exit(1)
+  }
   let tsConfigPath = userTsConfig 
-  if (args.tsConfig) {
+  if (tsConfig) {
     tsConfigPath = path.join(defaults.cwd, tsConfig || defaults.tsconfigName)
   }
   return tsConfigPath
