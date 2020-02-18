@@ -1,8 +1,13 @@
 #!/usr/bin/env node
 const argv = require('yargs').argv
 
-if (argv._[0] === 'webpack' && argv._[1] === 'app') {
-  require('../webpack/app').exec({
+if (typeof argv.env === 'string') {
+  const env = argv.env
+  argv.env = [env]
+}
+
+if (argv._[0] === 'pack' && argv._[1] === 'app') {
+  require('../pack/app').exec({
     env: argv.env,
     input: argv.in,
     out: argv.out,
@@ -12,8 +17,8 @@ if (argv._[0] === 'webpack' && argv._[1] === 'app') {
   })
 }
 
-if (argv._[0] === 'webpack' && argv._[1] === 'lib') {
-  require('../webpack/lib').exec({})
+if (argv._[0] === 'pack' && argv._[1] === 'lib') {
+  require('../pack/lib').exec({})
 }
 
 // console.log(argv)
