@@ -1,0 +1,45 @@
+#!/usr/bin/env node
+const argv = require('yargs').argv
+const execSync = require('child_process').execSync;
+
+const args = [ ...process.argv ]
+args.shift()
+args.shift()
+args.shift()
+
+
+if (argv._[0] === 'app') {
+  try {
+    execSync(`npx webpack --config ${__dirname}/../pack/app/exec.js ${args.join(' ')}`, {stdio:'inherit'});
+  } catch (error) {
+    // console.log(error)
+    // mute
+  }
+}
+
+if (argv._[0] === 'lib') {
+  try {
+    // library
+  } catch (error) {
+    // console.log(error)
+    // mute
+  }
+}
+
+if (argv._[0] === 'test') {
+  try {
+    // ts-jest
+  } catch (error) {
+    // console.log(error)
+    // mute
+  }
+}
+
+if (argv._[0] === 'lint') {
+  try {
+    // ts-lint
+  } catch (error) {
+    // console.log(error)
+    // mute
+  }
+}
