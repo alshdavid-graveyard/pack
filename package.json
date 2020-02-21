@@ -1,8 +1,8 @@
 {
   "name": "@alshdavid/pack",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
-  "bin": "./bin/pack",
+  "bin": "./bin/weeb",
   "author": "",
   "license": "ISC",
   "dependencies": {
