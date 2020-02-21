@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const fs = require('fs-extra')
 const argv = require('yargs').argv
 const execSync = require('child_process').execSync;
 
@@ -7,10 +8,27 @@ args.shift()
 args.shift()
 args.shift()
 
+if (!argv._.length) {
+  console.log('weeb pack')
+  console.log('weeb lib')
+  console.log('weeb test')
+  console.log('weeb lint')
+}
 
-if (argv._[0] === 'app') {
+if (argv._[0] === 'pack') {
   try {
-    execSync(`npx webpack --config ${__dirname}/../pack/app/exec.js ${args.join(' ')}`, {stdio:'inherit'});
+    let webpackLocation = `${__dirname}/../node_modules/.bin/webpack`
+    if (!fs.existsSync(webpackLocation)) {
+      webpackLocation = `${__dirname}/webpack`
+    }
+    if (!fs.existsSync(webpackLocation)) {
+      webpackLocation = `${__dirname}/../.bin/webpack`
+    }
+    if (!fs.existsSync(webpackLocation)) {
+      console.error('Webpack not found')
+      exit(1)
+    }
+    execSync(`node ${webpackLocation} --config ${__dirname}/../pack/app/exec.js ${args.join(' ')}`, {stdio:'inherit'});
   } catch (error) {
     // console.log(error)
     // mute

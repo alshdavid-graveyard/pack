@@ -28,8 +28,16 @@ const getInputDir = (input) => {
 }
 
 
-const getEntry = (inputDir = defaults.cwd, legacy = false, inName = defaults.inName) => {
-  let entry = [path.join(inputDir, inName)]
+const getEntry = (inputDir = defaults.cwd, legacy = false) => {
+  let mainFile = path.join(inputDir, defaults.inNameTsx)
+  if (!fs.existsSync(mainFile)) {
+    mainFile = path.join(inputDir, defaults.inName)
+  }
+  if (!fs.existsSync(mainFile)) {
+    console.error('No main.ts / main.tsx file')
+    process.exit(1)
+  }
+  const entry = [mainFile]
   if (legacy && fs.existsSync(path.join(inputDir, defaults.inLegacyName))) {
     entry.unshift(path.join(inputDir, defaults.inLegacyName))
   }
@@ -52,13 +60,14 @@ const getOutFile = (legacy = false) => {
   return outFile
 }
 
-const getTsConfig = (tsConfig) => {
-  let userTsConfig = path.join(defaults.cwd, defaults.tsconfigName)
-  if (!fs.existsSync(userTsConfig)) {
+const getTsConfig = (tsConfig = defaults.tsconfigName) => {
+  let tsConfigPath = path.join(defaults.cwd, tsConfig)
+  if (!fs.existsSync(tsConfigPath)) {
+    tsConfigPath = path.join(defaults.cwd, defaults.tsconfigName)
+  } else if (!fs.existsSync(tsConfigPath)) {
     console.error('No tsconfig.json found')
     process.exit(1)
   }
-  let tsConfigPath = userTsConfig 
   if (tsConfig) {
     tsConfigPath = path.join(defaults.cwd, tsConfig || defaults.tsconfigName)
   }

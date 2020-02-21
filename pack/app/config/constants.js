@@ -1,10 +1,12 @@
 const defaults = {
   cwd: process.cwd(),
   inName: 'main.ts',
+  inNameTsx: 'main.tsx',
   inLegacyName: 'nomodule.ts',
   outName: 'index.js',
   tsconfigName: 'tsconfig.json',
-  styleName: 'style.css'
+  styleName: 'style.css',
+  assetsName: 'assets',
 }
 
 const modes = {

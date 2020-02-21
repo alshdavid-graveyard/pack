@@ -4,6 +4,7 @@ const { createEnvironment } = require('./environment')
 const { createTSLoader, createTsPathsPlugin } = require('./ts-loaders')
 const { miniCssExtractPlugin, styleLoaders } = require('./style-loader')
 const { loadHtmlFiles } = require('./html')
+const { getAssetsPlugin } = require('./assets')
 
 const create = ({
   env,
@@ -25,10 +26,15 @@ const create = ({
     module: {
       rules: [
         ...styleLoaders,
-        ...createTSLoader(options.getMode(prod), options.getTsConfig(tsConfig), legacy)
+        ...createTSLoader(
+          options.getMode(prod), 
+          options.getTsConfig(tsConfig), 
+          legacy
+        )
       ]
     },
     plugins: [
+      ...getAssetsPlugin(inputDir),
       ...loadHtmlFiles(input),
       miniCssExtractPlugin,
       ...options.getStats(stats),
@@ -36,7 +42,7 @@ const create = ({
     ],
     resolve: {
       plugins: [
-        createTsPathsPlugin(tsConfig),
+        ...createTsPathsPlugin(tsConfig),
       ],
       extensions: ['.tsx', '.ts', '.js'],
       alias: {

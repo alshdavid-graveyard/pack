@@ -59,12 +59,19 @@ const prodLoaders = [
   }
 ]
 
-const createTsPathsPlugin = (tsConfigPath) => {
-  let configFile = path.join(defaults.cwd, defaults.tsconfigName)
-  return new TsconfigPathsPlugin({ configFile })
+const createTsPathsPlugin = (configFile = defaults.tsconfigName) => {
+  const config = require(path.join(defaults.cwd, configFile))
+  if (!config.compilerOptions.baseUrl) {
+    return []
+  }
+  return [new TsconfigPathsPlugin({ configFile })]
 }
 
-const createTSLoader = (mode, tsConfigPath, legacy = false) => {
+const createTSLoader = (
+  mode = modes.dev, 
+  tsConfigPath = defaults.tsconfigName, 
+  legacy = false
+) => {
   typeScriptLoaderConfig.options.configFile = tsConfigPath
   if (mode === modes.dev) {
     return devLoaders
