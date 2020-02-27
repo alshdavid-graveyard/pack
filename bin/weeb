@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 const fs = require('fs-extra')
+const path = require('path')
 const argv = require('yargs').argv
-const execSync = require('child_process').execSync;
+const { execSync, exec } = require('child_process');
+const { safeMkdir, safeLink, onExit } = require('../shared')
 
 const args = [ ...process.argv ]
 args.shift()
@@ -17,29 +19,18 @@ if (!argv._.length) {
 
 if (argv._[0] === 'pack') {
   try {
-    let webpackLocation = `${__dirname}/../node_modules/.bin/webpack`
-    if (!fs.existsSync(webpackLocation)) {
-      webpackLocation = `${__dirname}/webpack`
-    }
-    if (!fs.existsSync(webpackLocation)) {
-      webpackLocation = `${__dirname}/../.bin/webpack`
-    }
-    if (!fs.existsSync(webpackLocation)) {
-      console.error('Webpack not found')
-      exit(1)
-    }
-    execSync(`node ${webpackLocation} --config ${__dirname}/../pack/app/exec.js ${args.join(' ')}`, {stdio:'inherit'});
+    require('../commands/pack/exec')
   } catch (error) {
-    // console.log(error)
+    console.log(error)
     // mute
   }
 }
 
 if (argv._[0] === 'lib') {
   try {
-    // library
+    require('../commands/lib/exec')
   } catch (error) {
-    // console.log(error)
+    console.log(error)
     // mute
   }
 }
