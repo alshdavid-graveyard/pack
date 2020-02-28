@@ -1,20 +1,11 @@
 #!/usr/bin/env node
-const fs = require('fs-extra')
-const path = require('path')
 const argv = require('yargs').argv
-const { execSync, exec } = require('child_process');
-const { safeMkdir, safeLink, onExit } = require('../shared')
-
-const args = [ ...process.argv ]
-args.shift()
-args.shift()
-args.shift()
 
 if (!argv._.length) {
-  console.log('weeb pack')
-  console.log('weeb lib')
-  console.log('weeb test')
-  console.log('weeb lint')
+  console.log('sp pack --in src --out dist --ts-config myconfig.json')
+  console.log('sp lib')
+  console.log('sp test')
+  console.log('sp lint')
 }
 
 if (argv._[0] === 'pack') {

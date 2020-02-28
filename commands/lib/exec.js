@@ -21,30 +21,26 @@ const packages = [
 linkPkg(packages)
 linkPkg(bins, '.bin')
 
-
-
-if (typeof argv.external === 'string') {
-  const ext = argv.external
-  argv.external = [ext]
+if (typeof argv.ignorePath === 'undefined') {
+  argv.ignorePath = []
 }
 
-if (typeof argv.external === 'undefined') {
-  argv.external = []
+if (typeof argv.ignorePath === 'string') {
+  const ext = argv.ignorePath
+  argv.ignorePath = [ext]
 }
 
-let externals = ''
-for (const ext of argv.external) {
-  externals += `--config-external ${ext} `
+let ignorePaths = ''
+for (const ext of argv.ignorePath) {
+  ignorePaths += `--config-ignore-path ${ext} `
 }
-console.log(externals)
-
 
 execSync(`
   npx rollup \
     --config ${__dirname}/config.js \
     --config-in ${argv.in} \
     --config-out ${argv.out} \
-    ${externals}
+    ${ignorePaths}
      `, 
     {stdio:'inherit'}
 );
