@@ -1,20 +1,50 @@
-const path = require('path')
+const argv = require('yargs').argv
+const { execSync } = require('child_process');
+const { linkPkg, getArgs } = require('../../shared')
 
-const srcPaths = {
-  rollup: path.resolve(__dirname, '../node_modules/rollup'),
-  typescript: path.resolve(__dirname, '../node_modules/typescript'),
-  ttypescript: path.resolve(__dirname, '../node_modules/ttypescript'),
-  typescriptTransformPaths: path.resolve(__dirname, '../node_modules/typescript-transform-paths'),
-  tsc: path.resolve(__dirname, '../node_modules/.bin/tsc'),
-  ttsc: path.resolve(__dirname, '../node_modules/.bin/ttsc'),
+const bins = [
+  'rollup', 
+  'tsc', 
+  'ttsc'
+]
+
+const packages = [
+  'rollup', 
+  'typescript', 
+  'ttypescript', 
+  'typescript-transform-paths', 
+  'rollup-plugin-typescript2', 
+  'rollup-pluginutils',
+  'glob'
+]
+
+linkPkg(packages)
+linkPkg(bins, '.bin')
+
+
+
+if (typeof argv.external === 'string') {
+  const ext = argv.external
+  argv.external = [ext]
 }
 
-const destPaths = {
-  typescript: path.resolve(process.cwd(), './node_modules/typescript'),
-  typescriptTransformPaths: path.resolve(process.cwd(), './node_modules/typescript-transform-paths'),
-  tsc: path.resolve(process.cwd(), './node_modules/.bin/tsc'),
-  ttypescript: path.resolve(process.cwd(), './node_modules/ttypescript'),
-  ttsc: path.resolve(process.cwd(), './node_modules/.bin/ttsc'),
+if (typeof argv.external === 'undefined') {
+  argv.external = []
 }
 
-console.log('make lib')
+let externals = ''
+for (const ext of argv.external) {
+  externals += `--config-external ${ext} `
+}
+console.log(externals)
+
+
+execSync(`
+  npx rollup \
+    --config ${__dirname}/config.js \
+    --config-in ${argv.in} \
+    --config-out ${argv.out} \
+    ${externals}
+     `, 
+    {stdio:'inherit'}
+);

@@ -1,3 +1,4 @@
+const path = require('path')
 const fs = require('fs-extra')
 
 const safeMkdir = (dir) => {
@@ -13,26 +14,31 @@ const safeLink = (source, target) => {
 }
 
 const onExit = (fn) => {
-  // process.stdin.resume();
+  // handle onexit
+}
 
-  function exitHandler(options, exitCode) {
-      if (options.cleanup) {
-        fn()
-      };
-      if (options.exit) {
-        process.exit();
-      }
+const linkPkg = (pkgs, prefix = '') => {
+  const safePath = (...p) => path.join(...[...p].filter(i => i))
+
+  safeMkdir(path.resolve('node_modules'))
+  safeMkdir(path.resolve('node_modules', '.cache'))
+  
+  if (prefix) {
+    safeMkdir(path.resolve('node_modules', prefix))
   }
-
-  process.on('exit', exitHandler.bind(null,{cleanup:true}));
-  process.on('SIGINT', exitHandler.bind(null, {exit:true}));
-  process.on('SIGUSR1', exitHandler.bind(null, {exit:true}));
-  process.on('SIGUSR2', exitHandler.bind(null, {exit:true}));
-  process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
+  
+  for (const pkg of pkgs) {
+    const srcPath = safePath('..', 'node_modules', prefix, pkg)
+    const destPath = safePath('node_modules', prefix, pkg)
+    const src = path.resolve(__dirname, srcPath)
+    const dest = path.resolve(process.cwd(), destPath)
+    safeLink(src, dest)
+  }
 }
 
 module.exports = {
   safeLink,
   safeMkdir,
   onExit,
+  linkPkg,
 }

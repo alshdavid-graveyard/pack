@@ -1,25 +1,17 @@
-const path = require('path')
 const { execSync } = require('child_process');
-const { safeMkdir, safeLink, getArgs } = require('../../shared')
+const { linkPkg } = require('../../shared')
 
-const srcPaths = {
-  webpack: path.resolve(__dirname, '../../node_modules/webpack'),
-  webpackCli: path.resolve(__dirname, '../../node_modules/webpack-cli'),
-  webpackCliBin: path.resolve(__dirname, '../../node_modules/.bin/webpack'),
-}
+const bins = [
+  'webpack', 
+]
 
-const destPaths = {
-  webpack: path.resolve(process.cwd(), './node_modules/webpack'),
-  webpackCli: path.resolve(process.cwd(), './node_modules/webpack-cli'),
-  webpackCliBin: path.resolve(process.cwd(), './node_modules/.bin/webpack'),
-}
+const packages = [
+  'webpack', 
+  'webpack-cli',
+]
 
-safeMkdir(path.resolve('node_modules'))
-safeMkdir(path.resolve('node_modules', '.bin'))
-
-safeLink(srcPaths.webpack, destPaths.webpack)
-safeLink(srcPaths.webpackCli, destPaths.webpackCli)
-safeLink(srcPaths.webpackCliBin, destPaths.webpackCliBin)
+linkPkg(packages)
+linkPkg(bins, '.bin')
 
 execSync(`
   npx webpack \
