@@ -1,5 +1,5 @@
 const { execSync } = require('child_process');
-const { linkPkg } = require('../../shared')
+const { linkPkg, getArgs } = require('../../shared')
 
 const bins = [
   'webpack', 

@@ -2,15 +2,13 @@
 const argv = require('yargs').argv
 
 if (!argv._.length) {
-  console.log('sp pack --in src --out dist --ts-config myconfig.json')
-  console.log('sp lib')
-  console.log('sp test')
-  console.log('sp lint')
+  console.log('pack bundle --in src --out dist --ts-config myconfig.json')
+  console.log('pack lib')
 }
 
-if (argv._[0] === 'pack') {
+if (argv._[0] === 'bundle') {
   try {
-    require('../commands/pack/exec')
+    require('../commands/bundle/exec')
   } catch (error) {
     console.log(error)
     // mute
