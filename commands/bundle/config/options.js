@@ -29,12 +29,15 @@ const getInputDir = (input) => {
 
 
 const getEntry = (inputDir = defaults.cwd, legacy = false) => {
-  let mainFile = path.join(inputDir, defaults.inNameTsx)
+  let mainFile = path.join(inputDir, defaults.inName)
   if (!fs.existsSync(mainFile)) {
-    mainFile = path.join(inputDir, defaults.inName)
+    mainFile = path.join(inputDir, defaults.inName2)
   }
   if (!fs.existsSync(mainFile)) {
-    console.error('No main.ts / main.tsx file')
+    mainFile = path.join(inputDir, defaults.inNameTsx)
+  }
+  if (!fs.existsSync(mainFile)) {
+    console.error('No index.ts / main.ts / main.tsx file')
     process.exit(1)
   }
   const entry = [mainFile]

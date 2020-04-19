@@ -5,6 +5,7 @@ const { createTSLoader, createTsPathsPlugin } = require('./ts-loaders')
 const { miniCssExtractPlugin, styleLoaders } = require('./style-loader')
 const { loadHtmlFiles } = require('./html')
 const { getAssetsPlugin } = require('./assets')
+const WorkerPlugin = require('worker-plugin')
 
 const create = ({
   env,
@@ -34,6 +35,7 @@ const create = ({
       ]
     },
     plugins: [
+      new WorkerPlugin(),
       ...getAssetsPlugin(inputDir),
       ...loadHtmlFiles(input),
       miniCssExtractPlugin,

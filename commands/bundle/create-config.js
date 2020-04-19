@@ -15,4 +15,13 @@ const args = {
   tsConfig: argv['ts-config']
 }
 
-module.exports = require('./config/create').create(args)
+if (args.legacy) {
+  module.exports = [
+    require('./config/create').create({ ...args, legacy: false }), 
+    require('./config/create').create({ ...args, legacy: true }), 
+  ]
+} else {
+  module.exports = [
+    require('./config/create').create({ ...args, legacy: false }), 
+  ]
+}
