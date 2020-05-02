@@ -24,9 +24,10 @@ if (!fs.existsSync(options.getTsConfig(argv['ts-config']))) {
   process.exit(1)
 }
 
+let outDir
 if (argv['stats'] === true || argv['serve'] === true) {
   tmp.setGracefulCleanup();
-  const outDir = tmp.dirSync()
+  outDir = tmp.dirSync()
   for (const i in args) {
     if (args[i] === '--out') {
       args.splice(i, 1)
