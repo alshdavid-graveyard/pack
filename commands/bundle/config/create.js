@@ -16,6 +16,7 @@ const create = ({
   tsConfig,
   stats,
 }) => {
+  console.log(out)
   const inputDir = options.getInputDir(input)
   return {
     entry: options.getEntry(inputDir, legacy),
