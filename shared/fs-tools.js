@@ -8,9 +8,10 @@ const safeMkdir = (dir) => {
 }
 
 const safeLink = (source, target) => {
-  if (!fs.existsSync(target)) {
-    fs.symlinkSync(source, target)
+  if (fs.existsSync(target)) {
+    fs.removeSync(target)
   }
+  fs.symlinkSync(source, target)
 }
 
 const onExit = (fn) => {
