@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "lib": ["DOM", "ES2018"],
+    "target": "ES6",
+    "preserveWatchOutput": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "baseUrl": "./"
+  }
+}

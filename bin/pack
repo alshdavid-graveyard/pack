@@ -6,6 +6,15 @@ if (!argv._.length) {
   console.log('pack lib')
 }
 
+if (argv._[0] === 'new') {
+  try {
+    require('../commands/new/exec')
+  } catch (error) {
+    console.log(error)
+    // mute
+  }
+}
+
 if (argv._[0] === 'bundle') {
   try {
     require('../commands/bundle/exec')

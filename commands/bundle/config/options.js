@@ -48,10 +48,13 @@ const getEntry = (inputDir = defaults.cwd, legacy = false) => {
 }
 
 const getOutDir = (out) => {
-  if (out[0] === '.') {
-    return path.join(defaults.cwd, out)
+  let output = path.join(defaults.cwd, 'dist')
+  if (out && out[0] === '/') {
+    output = out
+  } else if (out) {
+    return output = path.join(defaults.cwd, out)
   }
-  return out || defaults.cwd
+  return output
 }
 
 const getOutFile = (legacy = false) => {
